@@ -33,7 +33,7 @@ namespace Lms.Data.Repositories
         public async Task<Course> FindAsync(int? id)
         {
             ArgumentNullException.ThrowIfNull(id);
-            var course = await db.Course.FindAsync(id);
+            var course = await db.Course.Include(c => c.Modules).FirstOrDefaultAsync(c => c.Id == id);
 
             if (course == null)
                 throw new DirectoryNotFoundException();
@@ -43,13 +43,13 @@ namespace Lms.Data.Repositories
 
         public async Task<IEnumerable<Course>> GetAllCourses()
         {
-            return await db.Course.ToListAsync();
+            return await db.Course.Include(c => c.Modules).ToListAsync();
         }
 
         public async Task<Course> GetCourse(int? id)
         {
             ArgumentNullException.ThrowIfNull(id);
-            var course = await db.Course.FindAsync(id);
+            var course = await db.Course.Include(c => c.Modules).FirstOrDefaultAsync(c => c.Id == id);
 
             if (course == null)
                 throw new DirectoryNotFoundException();
