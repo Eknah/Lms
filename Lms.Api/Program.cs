@@ -20,6 +20,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUoW, UoW>();
 
+builder.Services.AddAutoMapper(typeof(LmsMappings));
+
 var app = builder.Build();
 
 app.SeedDataAsync().GetAwaiter().GetResult();

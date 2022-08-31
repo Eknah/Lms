@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Lms.Data.Data;
 using Lms.Core.Entities;
 using Lms.Core.Repositories;
+using AutoMapper;
 
 namespace Lms.Api.Controllers
 {
@@ -16,10 +17,12 @@ namespace Lms.Api.Controllers
     public class ModulesController : ControllerBase
     {
         private readonly IUoW uow;
+        private readonly IMapper mapper;
 
-        public ModulesController(IUoW uow)
+        public ModulesController(IUoW uow, IMapper mapper)
         {
             this.uow = uow;
+            this.mapper = mapper;
         }
 
         // GET: api/Modules
