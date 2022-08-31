@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lms.Data.Data;
 using Lms.Core.Entities;
+using Lms.Core.Repositories;
 
 namespace Lms.Api.Controllers
 {
@@ -15,10 +16,12 @@ namespace Lms.Api.Controllers
     public class ModulesController : ControllerBase
     {
         private readonly LmsApiContext _context;
+        private readonly IUoW uow;
 
-        public ModulesController(LmsApiContext context)
+        public ModulesController(LmsApiContext context, IUoW uow)
         {
             _context = context;
+            this.uow = uow;
         }
 
         // GET: api/Modules
