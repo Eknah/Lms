@@ -40,6 +40,9 @@ namespace Lms.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CourseDto>> GetCourse(int id)
         {
+            if (!await uow.CourseRepository.AnyAsync(id))
+                return NotFound();
+
             var course = await uow.CourseRepository.GetCourse(id);
             var dto = mapper.Map<CourseDto>(course);
 
@@ -51,9 +54,15 @@ namespace Lms.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourse(int id, Course course)
         {
-            uow.CourseRepository.Update(course);
-
-            await uow.CompleteAsync();
+            try
+            {
+                uow.CourseRepository.Update(course);
+                await uow.CompleteAsync();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
             return NoContent();
         }
@@ -63,9 +72,15 @@ namespace Lms.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Course>> PostCourse(Course course)
         {
-            uow.CourseRepository.Add(course);
-
-            await uow.CompleteAsync();
+            try
+            {
+                uow.CourseRepository.Add(course);
+                await uow.CompleteAsync();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
             return CreatedAtAction("GetCourse", new { id = course.Id }, course);
         }
@@ -74,8 +89,18 @@ namespace Lms.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
-            uow.CourseRepository.Remove(await uow.CourseRepository.FindAsync(id));
-            await uow.CompleteAsync();
+            if (!await uow.CourseRepository.AnyAsync(id))
+                return NotFound();
+
+            try
+            {
+                uow.CourseRepository.Remove(await uow.CourseRepository.FindAsync(id));
+                await uow.CompleteAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             return NoContent();
         }
