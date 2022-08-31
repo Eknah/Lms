@@ -9,6 +9,7 @@ using Lms.Data.Data;
 using Lms.Core.Entities;
 using Lms.Core.Repositories;
 using AutoMapper;
+using Lms.Core.Dto;
 
 namespace Lms.Api.Controllers
 {
@@ -27,16 +28,22 @@ namespace Lms.Api.Controllers
 
         // GET: api/Courses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourse()
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetCourse()
         {
-            return Ok(await uow.CourseRepository.GetAllCourses());
+            var courses = await uow.CourseRepository.GetAllCourses();
+            var dto = mapper.Map<IEnumerable<CourseDto>>(courses);
+
+            return Ok(dto);
         }
 
         // GET: api/Courses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(int id)
+        public async Task<ActionResult<CourseDto>> GetCourse(int id)
         {
-            return Ok(await uow.CourseRepository.GetCourse(id));
+            var course = await uow.CourseRepository.GetCourse(id);
+            var dto = mapper.Map<CourseDto>(course);
+
+            return Ok(dto);
         }
 
         // PUT: api/Courses/5

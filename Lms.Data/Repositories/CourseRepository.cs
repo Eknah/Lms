@@ -43,7 +43,9 @@ namespace Lms.Data.Repositories
 
         public async Task<IEnumerable<Course>> GetAllCourses()
         {
-            return await db.Course.Include(c => c.Modules).ToListAsync();
+            var query = db.Course.Include(c => c.Modules);
+            var result = await query.ToListAsync();
+            return result;
         }
 
         public async Task<Course> GetCourse(int? id)

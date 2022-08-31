@@ -24,7 +24,19 @@ builder.Services.AddAutoMapper(typeof(LmsMappings));
 
 var app = builder.Build();
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<LmsApiContext>();
+
+    db.Database.EnsureDeleted();
+    db.Database.Migrate();
+}
+
 app.SeedDataAsync().GetAwaiter().GetResult();
+
+
+//app.SeedDataAsync().GetAwaiter().GetResult();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
