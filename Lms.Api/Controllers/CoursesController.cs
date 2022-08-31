@@ -26,18 +26,14 @@ namespace Lms.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourse()
         {
-            var courses = await uow.CourseRepository.GetAllCourses();
-
-            return Ok(courses);
+            return Ok(await uow.CourseRepository.GetAllCourses());
         }
 
         // GET: api/Courses/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Course>> GetCourse(int id)
         {
-            var course = await uow.CourseRepository.GetCourse(id);
-
-            return Ok(course);
+            return Ok(await uow.CourseRepository.GetCourse(id));
         }
 
         // PUT: api/Courses/5
