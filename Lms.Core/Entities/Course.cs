@@ -12,6 +12,6 @@ namespace Lms.Core.Entities
         public string Title { get; set; }
         public DateTime StartDate { get; set; }
 
-        public ICollection<Module> Modules { get; set; }
+        public ICollection<Module> Modules { get; set; } = new List<Module>();
     }
 }
