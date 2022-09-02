@@ -10,6 +10,7 @@ using Lms.Core.Entities;
 using Lms.Core.Repositories;
 using AutoMapper;
 using Lms.Core.Dto;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Lms.Api.Controllers
 {
@@ -103,6 +104,18 @@ namespace Lms.Api.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPatch("{courseId}")]
+        public async Task<ActionResult<CourseDto>> PatchCourse(int courseId, JsonPatchDocument<CourseDto> patchDocument)
+        {
+            var course = await uow.CourseRepository.GetCourse(courseId);
+            var dto = mapper.Map<CourseDto>(course);
+            patchDocument.ApplyTo(dto, ModelState);
+            mapper.Map(dto, course);
+            await uow.CompleteAsync();
+
+            return Ok(dto);
         }
     }
 }
