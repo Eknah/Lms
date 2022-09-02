@@ -37,14 +37,23 @@ namespace Lms.Api.Controllers
             return Ok(dto);
         }
 
-        // GET: api/Modules/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Module>> GetModule(int id)
-        {
-            if (!await uow.ModuleRepository.AnyAsync(id))
-                return NotFound();
+        //// GET: api/Modules/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Module>> GetModule(int id)
+        //{
+        //    if (!await uow.ModuleRepository.AnyAsync(id))
+        //        return NotFound();
 
-            var module = await uow.ModuleRepository.GetModule(id);
+        //    var module = await uow.ModuleRepository.GetModule(id);
+        //    var dto = mapper.Map<ModuleDto>(module);
+
+        //    return Ok(dto);
+        //}
+
+        [HttpGet("{title}")]
+        public async Task<ActionResult<Module>> GetModule(string title)
+        {
+            var module = await uow.ModuleRepository.GetModule(title);
             var dto = mapper.Map<ModuleDto>(module);
 
             return Ok(dto);

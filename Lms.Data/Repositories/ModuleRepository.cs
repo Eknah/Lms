@@ -57,6 +57,16 @@ namespace Lms.Data.Repositories
             return module;
         }
 
+        public async Task<Module> GetModule(string title)
+        {
+            var module = await db.Module.FirstOrDefaultAsync(m => m.Title == title);
+
+            if (module == null)
+                throw new DirectoryNotFoundException();
+
+            return module;
+        }
+
         public void Remove(Module module)
         {
             db.Module.Remove(module);
