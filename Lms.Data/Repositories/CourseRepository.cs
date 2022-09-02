@@ -41,9 +41,13 @@ namespace Lms.Data.Repositories
             return course;
         }
 
-        public async Task<IEnumerable<Course>> GetAllCourses()
+        public async Task<IEnumerable<Course>> GetAllCourses(bool includeModules = false)
         {
-            var query = db.Course.Include(c => c.Modules);
+            IQueryable<Course> query = db.Course;
+
+            if (includeModules)
+                query = query.Include(c => c.Modules);
+
             var result = await query.ToListAsync();
             return result;
         }

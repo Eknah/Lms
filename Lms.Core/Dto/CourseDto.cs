@@ -12,5 +12,7 @@ namespace Lms.Core.Dto
         public string Title { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate => StartDate.AddMonths(3);
+
+        public ICollection<ModuleDto> Modules { get; set; }
     }
 }
